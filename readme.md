@@ -21,7 +21,7 @@ new(grandma: Option<AccountId>)
 Creates a new contract 
 only the developer can create a new instance of this contract (this is not true for the public beta)
 use the grandma for data migration of an old contract (this is not enabled for the public beta)
-
+ 
 
 init(): Result<Result<Null, OrderbookDataSecuritytokenexchangeError>, InkPrimitivesLangError>
 No documentation provided
