@@ -1,0 +1,3242 @@
+{
+  "source": {
+    "hash": "0x409e665853268c221a6b22e72ba0cf0bb31b10c058cbb200816cdc6fa1d88d91",
+    "language": "ink! 4.3.0",
+    "compiler": "rustc 1.76.0",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "3.2.0",
+      "rust_toolchain": "stable-x86_64-pc-windows-msvc",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
+  },
+  "contract": {
+    "name": "orderbook_data",
+    "version": "6.1.1",
+    "authors": [
+      "Brian Savelkouls <info@securitytoken.exchange>"
+    ]
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "grandma",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          "Creates a new contract",
+          "only the `developer` can create a new instance of this contract",
+          "use the grandma for data migration of an old contract"
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x9bae9d5e"
+      }
+    ],
+    "docs": [],
+    "environment": {
+      "accountId": {
+        "displayName": [
+          "AccountId"
+        ],
+        "type": 0
+      },
+      "balance": {
+        "displayName": [
+          "Balance"
+        ],
+        "type": 6
+      },
+      "blockNumber": {
+        "displayName": [
+          "BlockNumber"
+        ],
+        "type": 16
+      },
+      "chainExtension": {
+        "displayName": [
+          "ChainExtension"
+        ],
+        "type": 50
+      },
+      "hash": {
+        "displayName": [
+          "Hash"
+        ],
+        "type": 45
+      },
+      "maxEventTopics": 4,
+      "timestamp": {
+        "displayName": [
+          "Timestamp"
+        ],
+        "type": 4
+      }
+    },
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "global_order_id",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "account_id",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "market_ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "status",
+            "type": {
+              "displayName": [
+                "OrderStatus"
+              ],
+              "type": 28
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "filled",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "timestamp",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          "Define the events for this contract"
+        ],
+        "label": "OrderbookEvent"
+      }
+    ],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 20
+    },
+    "messages": [
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "init",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x44d6441f"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Get the current orderbook size",
+          " only works when the contract is `initialized`"
+        ],
+        "label": "get_orderbook_size",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 21
+        },
+        "selector": "0xfe8cf25b"
+      },
+      {
+        "args": [
+          {
+            "label": "order_id",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retrieve a single order by ID"
+        ],
+        "label": "get_order_by_id",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 23
+        },
+        "selector": "0x4379105c"
+      },
+      {
+        "args": [
+          {
+            "label": "base_ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "quote_ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "base_qty",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "quote_qty",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "side",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "gtc",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 3
+            }
+          },
+          {
+            "label": "expires",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 27
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "create_new_order",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 23
+        },
+        "selector": "0x6444ba6c"
+      },
+      {
+        "args": [
+          {
+            "label": "order_id",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "cancel_order",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0xe90b7ff6"
+      },
+      {
+        "args": [
+          {
+            "label": "order_id",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "new_base_qty",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "new_quote_qty",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Update the status of an existing order."
+        ],
+        "label": "update_order",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x305c9e0f"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Get all active orders for the given ticker."
+        ],
+        "label": "get_active_orders",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0xe7da6561"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "side",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Count the number of active `Buy` or `Sell` orders in the order book."
+        ],
+        "label": "count_orders_by_side",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 21
+        },
+        "selector": "0x7bcabcb9"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "side",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retrieve order details based on properties such as side and status."
+        ],
+        "label": "get_orders_by_side",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0x1e594975"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " get lowest sell price"
+        ],
+        "label": "get_lowest_sell_price",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 32
+        },
+        "selector": "0x01d141e1"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " get highest buy price"
+        ],
+        "label": "get_highest_buy_price",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 32
+        },
+        "selector": "0xdd856d5c"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "take_from",
+            "type": {
+              "displayName": [
+                "OrderSide"
+              ],
+              "type": 26
+            }
+          },
+          {
+            "label": "amount",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 6
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Return the orders required to fill a specific buy or sell"
+        ],
+        "label": "take_orders",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0x350e14ab"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Scan and mark orders as expired based on their timestamps and expiration details.",
+          " This function should be called periodically to ensure that the order book is up to date, and that expired orders are removed."
+        ],
+        "label": "expire_orders",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0xf5e44ff9"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "order_id",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "filled_amt",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 34
+            }
+          },
+          {
+            "label": "new_status",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 35
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Update the filled amount of an order after a partial trade.",
+          " this message is only callable by a upstream contract"
+        ],
+        "label": "orderbook_management",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x8b0f8355"
+      },
+      {
+        "args": [
+          {
+            "label": "base_ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "quote_ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "decimals_base",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 36
+            }
+          },
+          {
+            "label": "decimals_quote",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 36
+            }
+          },
+          {
+            "label": "asset_name",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 35
+            }
+          },
+          {
+            "label": "asset_class",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 37
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Pay the contract to create a new market",
+          " Decimals default to 6"
+        ],
+        "label": "create_new_market",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 39
+        },
+        "selector": "0x3d5d91f6"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Retrieves all active markets from the order book."
+        ],
+        "label": "get_all_markets",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 42
+        },
+        "selector": "0x57b21286"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " For a given market ticker, return the market details.",
+          " Also when a market is halted"
+        ],
+        "label": "get_market_info",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 39
+        },
+        "selector": "0x498c1282"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retrieve `active` orders for a specific market."
+        ],
+        "label": "get_market_orders",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0xfe821f07"
+      },
+      {
+        "args": [
+          {
+            "label": "user",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retrieve `active` orders by a specific accountId."
+        ],
+        "label": "get_orders_by_user",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 29
+        },
+        "selector": "0x738ce7a8"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Purge orders.",
+          " This function allows the `admin` to remove inactive orders from the blockchain."
+        ],
+        "label": "purge_orders",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0xe2754eb3"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "halted",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 3
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Update the status (halted/active) of a specific market.",
+          " only the `admin` can call this function"
+        ],
+        "label": "update_market_status",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0xef2b62fd"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " this call allows the admin to halt all trading",
+          " only the `admin` is allowed to call this"
+        ],
+        "label": "halt_trading",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x956aa798"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " this call allows the admin to halt all trading",
+          " only the `admin` is allowed to call this"
+        ],
+        "label": "resume_trading",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x6633162f"
+      },
+      {
+        "args": [
+          {
+            "label": "ticker",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Terminate a market and remove its orders."
+        ],
+        "label": "terminate_market",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x894f0304"
+      },
+      {
+        "args": [
+          {
+            "label": "code_hash",
+            "type": {
+              "displayName": [
+                "Hash"
+              ],
+              "type": 45
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Update the code hash of this smart contract.",
+          " Only the `admin` is allowed to call this."
+        ],
+        "label": "update_contract_code_hash",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x66fc5c67"
+      },
+      {
+        "args": [
+          {
+            "label": "nominated_admin",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " This call allows the admin to assign a new admin",
+          " Only the `admin` is allowed to call this"
+        ],
+        "label": "nominate_admin",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x4de9afaa"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " This call allows the nominated admin to accept the admin role",
+          " Only the `nominated_admin` is allowed to call this"
+        ],
+        "label": "accept_admin_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x4d70e9f8"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " This call allows the admin to terminate the contract",
+          " Value stored in the contract will be transfered to the admin",
+          " Only the `admin` is allowed to call this"
+        ],
+        "label": "terminate",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 46
+        },
+        "selector": "0x476d839f"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " Get the contract's DID."
+        ],
+        "label": "contract_did",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 47
+        },
+        "selector": "0x77092388"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
+              "name": "admin"
+            },
+            {
+              "layout": {
+                "enum": {
+                  "dispatchKey": "0x00000000",
+                  "name": "Option",
+                  "variants": {
+                    "0": {
+                      "fields": [],
+                      "name": "None"
+                    },
+                    "1": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x00000000",
+                              "ty": 0
+                            }
+                          },
+                          "name": "0"
+                        }
+                      ],
+                      "name": "Some"
+                    }
+                  }
+                }
+              },
+              "name": "nominated_admin"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 3
+                }
+              },
+              "name": "initialized"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 3
+                }
+              },
+              "name": "halted"
+            },
+            {
+              "layout": {
+                "struct": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "array": {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x00000000",
+                              "ty": 2
+                            }
+                          },
+                          "len": 32,
+                          "offset": "0x00000000"
+                        }
+                      },
+                      "name": "0"
+                    }
+                  ],
+                  "name": "IdentityId"
+                }
+              },
+              "name": "did"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
+              "name": "last_global_order_id"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 4
+                            }
+                          },
+                          "name": "global_order_id"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 0
+                            }
+                          },
+                          "name": "account_id"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 5
+                            }
+                          },
+                          "name": "base_ticker"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 5
+                            }
+                          },
+                          "name": "quote_ticker"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 6
+                            }
+                          },
+                          "name": "base_qty"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 6
+                            }
+                          },
+                          "name": "quote_qty"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xa8863d52",
+                              "name": "OrderSide",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "Buy"
+                                },
+                                "1": {
+                                  "fields": [],
+                                  "name": "Sell"
+                                }
+                              }
+                            }
+                          },
+                          "name": "side"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 6
+                            }
+                          },
+                          "name": "price"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 4
+                            }
+                          },
+                          "name": "timestamp"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 3
+                            }
+                          },
+                          "name": "gtc"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xa8863d52",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0xa8863d52",
+                                          "ty": 4
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "expires"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xa8863d52",
+                              "ty": 6
+                            }
+                          },
+                          "name": "filled"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0xa8863d52",
+                              "name": "OrderStatus",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "Active"
+                                },
+                                "1": {
+                                  "fields": [],
+                                  "name": "Filled"
+                                },
+                                "2": {
+                                  "fields": [],
+                                  "name": "Expired"
+                                },
+                                "3": {
+                                  "fields": [],
+                                  "name": "Canceled"
+                                }
+                              }
+                            }
+                          },
+                          "name": "status"
+                        }
+                      ],
+                      "name": "Order"
+                    }
+                  },
+                  "root_key": "0xa8863d52"
+                }
+              },
+              "name": "order_book"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x13aa0c2d",
+                      "ty": 7
+                    }
+                  },
+                  "root_key": "0x13aa0c2d"
+                }
+              },
+              "name": "account_orders"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x83afd756",
+                              "ty": 5
+                            }
+                          },
+                          "name": "ticker"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x83afd756",
+                              "ty": 3
+                            }
+                          },
+                          "name": "halted"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x83afd756",
+                              "ty": 7
+                            }
+                          },
+                          "name": "active_orders"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x83afd756",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x83afd756",
+                                          "ty": 2
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "decimals_base"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x83afd756",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x83afd756",
+                                          "ty": 2
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "decimals_quote"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x83afd756",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "leaf": {
+                                          "key": "0x83afd756",
+                                          "ty": 5
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "asset_name"
+                        },
+                        {
+                          "layout": {
+                            "enum": {
+                              "dispatchKey": "0x83afd756",
+                              "name": "Option",
+                              "variants": {
+                                "0": {
+                                  "fields": [],
+                                  "name": "None"
+                                },
+                                "1": {
+                                  "fields": [
+                                    {
+                                      "layout": {
+                                        "enum": {
+                                          "dispatchKey": "0x83afd756",
+                                          "name": "AssetClass",
+                                          "variants": {
+                                            "0": {
+                                              "fields": [],
+                                              "name": "Equity"
+                                            },
+                                            "1": {
+                                              "fields": [],
+                                              "name": "StableCoin"
+                                            },
+                                            "2": {
+                                              "fields": [],
+                                              "name": "Derivative"
+                                            },
+                                            "3": {
+                                              "fields": [],
+                                              "name": "StructuredProduct"
+                                            },
+                                            "4": {
+                                              "fields": [],
+                                              "name": "FixedIncome"
+                                            },
+                                            "5": {
+                                              "fields": [],
+                                              "name": "RevenueShare"
+                                            },
+                                            "6": {
+                                              "fields": [],
+                                              "name": "Crypto"
+                                            },
+                                            "7": {
+                                              "fields": [],
+                                              "name": "Commodity"
+                                            },
+                                            "8": {
+                                              "fields": [],
+                                              "name": "REIT"
+                                            },
+                                            "9": {
+                                              "fields": [],
+                                              "name": "PolyX"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "name": "0"
+                                    }
+                                  ],
+                                  "name": "Some"
+                                }
+                              }
+                            }
+                          },
+                          "name": "asset_class"
+                        }
+                      ],
+                      "name": "Market"
+                    }
+                  },
+                  "root_key": "0x83afd756"
+                }
+              },
+              "name": "markets"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 8
+                }
+              },
+              "name": "market_tickers"
+            }
+          ],
+          "name": "SecurityTokenExchange"
+        }
+      },
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 2
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 4
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 5
+          }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 11
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 12
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 14,
+                    "typeName": "PolymeshError"
+                  }
+                ],
+                "index": 0,
+                "name": "PolymeshInk"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 6,
+                    "typeName": "Balance"
+                  }
+                ],
+                "index": 1,
+                "name": "InsufficientTransferValue"
+              },
+              {
+                "index": 2,
+                "name": "ScaleError"
+              },
+              {
+                "index": 3,
+                "name": "MissingIdentity"
+              },
+              {
+                "index": 4,
+                "name": "NotInitialized"
+              },
+              {
+                "index": 5,
+                "name": "MarketHalted"
+              },
+              {
+                "index": 6,
+                "name": "AlreadyInitialized"
+              },
+              {
+                "index": 7,
+                "name": "InvalidTicker"
+              },
+              {
+                "index": 8,
+                "name": "InvalidOrder"
+              },
+              {
+                "index": 9,
+                "name": "NotAuthorized"
+              },
+              {
+                "index": 10,
+                "name": "NotImplemented"
+              },
+              {
+                "index": 11,
+                "name": "FailedToGetOrderbookSize"
+              },
+              {
+                "index": 12,
+                "name": "FailedToGetOrder"
+              },
+              {
+                "index": 13,
+                "name": "InsufficientLiquidity"
+              },
+              {
+                "index": 14,
+                "name": "ProcessingError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "securitytokenexchange",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 15,
+                    "typeName": "PolymeshInkError"
+                  }
+                ],
+                "index": 0,
+                "name": "PolymeshRuntime"
+              },
+              {
+                "index": 1,
+                "name": "MissingIdentity"
+              },
+              {
+                "index": 2,
+                "name": "InvalidPortfolioAuthorization"
+              },
+              {
+                "fields": [
+                  {
+                    "name": "selector",
+                    "type": 17,
+                    "typeName": "[u8; 4]"
+                  },
+                  {
+                    "name": "err",
+                    "type": 18,
+                    "typeName": "Option<InkEnvError>"
+                  }
+                ],
+                "index": 3,
+                "name": "InkDelegateCallError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "polymesh_ink",
+          "PolymeshError"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 5,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 0,
+                "name": "ParityScaleCodec"
+              },
+              {
+                "fields": [
+                  {
+                    "name": "status_code",
+                    "type": 16,
+                    "typeName": "u32"
+                  }
+                ],
+                "index": 1,
+                "name": "Generic"
+              },
+              {
+                "fields": [
+                  {
+                    "name": "error_msg",
+                    "type": 5,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 2,
+                "name": "ExtrinsicCallFailed"
+              }
+            ]
+          }
+        },
+        "path": [
+          "polymesh_api_ink",
+          "error",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "array": {
+            "len": 4,
+            "type": 2
+          }
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 19
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "ScaleDecodeError"
+              },
+              {
+                "index": 1,
+                "name": "CalleeTrapped"
+              },
+              {
+                "index": 2,
+                "name": "CalleeReverted"
+              },
+              {
+                "index": 3,
+                "name": "KeyNotFound"
+              },
+              {
+                "index": 4,
+                "name": "TransferFailed"
+              },
+              {
+                "index": 5,
+                "name": "_EndowmentTooLow"
+              },
+              {
+                "index": 6,
+                "name": "CodeNotFound"
+              },
+              {
+                "index": 7,
+                "name": "NotCallable"
+              },
+              {
+                "index": 8,
+                "name": "LoggingDisabled"
+              },
+              {
+                "index": 9,
+                "name": "EcdsaRecoveryFailed"
+              }
+            ]
+          }
+        },
+        "path": [
+          "polymesh_ink",
+          "InkEnvError"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 22
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 24
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 24
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 25
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "global_order_id",
+                "type": 4,
+                "typeName": "u64"
+              },
+              {
+                "name": "account_id",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "base_ticker",
+                "type": 5,
+                "typeName": "String"
+              },
+              {
+                "name": "quote_ticker",
+                "type": 5,
+                "typeName": "String"
+              },
+              {
+                "name": "base_qty",
+                "type": 6,
+                "typeName": "u128"
+              },
+              {
+                "name": "quote_qty",
+                "type": 6,
+                "typeName": "u128"
+              },
+              {
+                "name": "side",
+                "type": 26,
+                "typeName": "OrderSide"
+              },
+              {
+                "name": "price",
+                "type": 6,
+                "typeName": "u128"
+              },
+              {
+                "name": "timestamp",
+                "type": 4,
+                "typeName": "u64"
+              },
+              {
+                "name": "gtc",
+                "type": 3,
+                "typeName": "bool"
+              },
+              {
+                "name": "expires",
+                "type": 27,
+                "typeName": "Option<u64>"
+              },
+              {
+                "name": "filled",
+                "type": 6,
+                "typeName": "u128"
+              },
+              {
+                "name": "status",
+                "type": 28,
+                "typeName": "OrderStatus"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "Order"
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Buy"
+              },
+              {
+                "index": 1,
+                "name": "Sell"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "OrderSide"
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Active"
+              },
+              {
+                "index": 1,
+                "name": "Filled"
+              },
+              {
+                "index": 2,
+                "name": "Expired"
+              },
+              {
+                "index": 3,
+                "name": "Canceled"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "OrderStatus"
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 30
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 30
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 31
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 31
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 25
+          }
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 33
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 33
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 6
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 6
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 34,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 6
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 6
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 35,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 5
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 5
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 2
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 2
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 37,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 38
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 38
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 38,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "Equity"
+              },
+              {
+                "index": 1,
+                "name": "StableCoin"
+              },
+              {
+                "index": 2,
+                "name": "Derivative"
+              },
+              {
+                "index": 3,
+                "name": "StructuredProduct"
+              },
+              {
+                "index": 4,
+                "name": "FixedIncome"
+              },
+              {
+                "index": 5,
+                "name": "RevenueShare"
+              },
+              {
+                "index": 6,
+                "name": "Crypto"
+              },
+              {
+                "index": 7,
+                "name": "Commodity"
+              },
+              {
+                "index": 8,
+                "name": "REIT"
+              },
+              {
+                "index": 9,
+                "name": "PolyX"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "AssetClass"
+        ]
+      }
+    },
+    {
+      "id": 39,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 40
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 40
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 40,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 41
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 41
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 41,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "ticker",
+                "type": 5,
+                "typeName": "String"
+              },
+              {
+                "name": "halted",
+                "type": 3,
+                "typeName": "bool"
+              },
+              {
+                "name": "active_orders",
+                "type": 7,
+                "typeName": "Vec<u64>"
+              },
+              {
+                "name": "decimals_base",
+                "type": 36,
+                "typeName": "Option<u8>"
+              },
+              {
+                "name": "decimals_quote",
+                "type": 36,
+                "typeName": "Option<u8>"
+              },
+              {
+                "name": "asset_name",
+                "type": 35,
+                "typeName": "Option<String>"
+              },
+              {
+                "name": "asset_class",
+                "type": 37,
+                "typeName": "Option<AssetClass>"
+              }
+            ]
+          }
+        },
+        "path": [
+          "orderbook_data",
+          "Market"
+        ]
+      }
+    },
+    {
+      "id": 42,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 43
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 43
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 43,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 44
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 44
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 44,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 41
+          }
+        }
+      }
+    },
+    {
+      "id": 45,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ]
+      }
+    },
+    {
+      "id": 46,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 12
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 47,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 48
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 48
+          },
+          {
+            "name": "E",
+            "type": 20
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 48,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 49
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 49
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 49,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "polymesh_api_ink",
+          "basic_types",
+          "IdentityId"
+        ]
+      }
+    },
+    {
+      "id": 50,
+      "type": {
+        "def": {
+          "variant": {}
+        },
+        "path": [
+          "polymesh_api_ink",
+          "extension",
+          "PolymeshRuntime"
+        ]
+      }
+    }
+  ],
+  "version": "4"
+}
